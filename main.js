@@ -101,16 +101,31 @@ const posts = [
 
 const container = document.getElementById('container');
 posts.forEach((element) => {
-    container.innerHTML += createPost(element);    
+    container.innerHTML += createPost(element);
 });
 
 const likeButtons = document.querySelectorAll('.like-button.js-like-button')
 likeButtons.forEach((likeButton, index) => {
-    likeButton.addEventListener('click', function(event){
+    likeButton.addEventListener('click', function (event) {
         event.preventDefault();
-        likeButton.classList.add('like-button--liked');
+        addLike(this);
     });
 });
+
+function addLike(element) {
+    const postId = element.getAttribute('data-postid');
+
+    if (postId) {
+        const likeCounterElement = document.getElementById(`like-counter-${postId}`);
+        if (element.classList.contains('like-button--liked')) {
+            element.classList.remove('like-button--liked');
+            likeCounterElement.innerHTML = parseInt(likeCounterElement.innerHTML) - 1;
+        } else {
+            element.classList.add('like-button--liked');
+            likeCounterElement.innerHTML = parseInt(likeCounterElement.innerHTML) + 1;
+        }
+    }
+}
 
 function createPost(info) {
     const { id, content, media, author, likes, is_liked, created } = info;
@@ -145,5 +160,5 @@ function createPost(info) {
                 </div>
             </div>
         </div>`;
-        return postInfo;
+    return postInfo;
 }
