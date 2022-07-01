@@ -100,8 +100,16 @@ const posts = [
 // INIZIO ESERCIZIO
 
 const container = document.getElementById('container');
-posts.forEach((element, index) => {
-    container.innerHTML += createPost(element);
+posts.forEach((element) => {
+    container.innerHTML += createPost(element);    
+});
+
+const likeButtons = document.querySelectorAll('.like-button.js-like-button')
+likeButtons.forEach((likeButton, index) => {
+    likeButton.addEventListener('click', function(event){
+        event.preventDefault();
+        likeButton.classList.add('like-button--liked');
+    });
 });
 
 function createPost(info) {
@@ -132,7 +140,7 @@ function createPost(info) {
                         </a>
                     </div>
                     <div class="likes__counter">
-                        Piace a <b id="like-counter-1" class="js-likes-counter">${likes}</b> persone
+                        Piace a <b id="like-counter-${id}" class="js-likes-counter">${likes}</b> persone
                     </div>
                 </div>
             </div>
