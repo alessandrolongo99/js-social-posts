@@ -89,7 +89,7 @@ const posts = [
         "media": "https://unsplash.it/600/400?image=554",
         "author": {
             "name": "Mario Di Nio",
-            "image": "null"
+            "image": null
         },
         "likes": 95,
         "is_liked": true,
@@ -104,7 +104,7 @@ posts.forEach((element) => {
     container.innerHTML += createPost(element);
 });
 
-const likeButtons = document.querySelectorAll('.like-button.js-like-button')
+const likeButtons = document.querySelectorAll('.like-button.js-like-button');
 likeButtons.forEach((likeButton, index) => {
     likeButton.addEventListener('click', function (event) {
         event.preventDefault();
@@ -113,6 +113,15 @@ likeButtons.forEach((likeButton, index) => {
     const currentPost = searchId(posts, likeButton.getAttribute('data-postid'));
     if (currentPost.is_liked) {
         likeButton.click();
+    }
+});
+
+const picContainers = document.querySelectorAll('.post-meta__icon');
+picContainers.forEach((picContainer, index) => {
+    const currentPost = searchId(posts, picContainer.getAttribute('data-postid'));
+    if (currentPost.author.image == null) {
+        picContainer.classList.add('profile-pic-default');
+        picContainer.innerHTML = `<span>${defaultPic(currentPost.author.name)}</span>`;
     }
 });
 
@@ -138,7 +147,7 @@ function createPost(info) {
         `<div class="post">
             <div class="post__header">
                 <div class="post-meta">
-                    <div class="post-meta__icon">
+                    <div class="post-meta__icon" data-postid="${id}">
                         <img class="profile-pic" src="${author.image}" alt="${author.name}">
                     </div>
                     <div class="post-meta__data">
@@ -175,3 +184,15 @@ function searchId(array, id) {
 function changeDate(data) {
     return data.split('-').reverse().join('/');
 }
+
+function defaultPic(name) {
+    const fullName = name.split(' ');
+    const initials = fullName.shift().charAt(0) + fullName.pop().charAt(0);
+    return initials.toUpperCase();
+}
+
+// if (currentPost.author.image == null) {
+//     const picContainer = document.querySelector('div.post-meta__icon');
+//     picContainer.classList.add('profile-pic-default');
+//     picContainer.innerHTML = `<span>${defaultPic(currentPost.author.name)}</span>`;
+// }
