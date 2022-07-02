@@ -108,21 +108,22 @@ const likeButtons = document.querySelectorAll('.like-button.js-like-button')
 likeButtons.forEach((likeButton, index) => {
     likeButton.addEventListener('click', function (event) {
         event.preventDefault();
-        addLike(this);
+        addLike(this, posts);
     });
 });
 
-function addLike(element) {
+function addLike(element, postList) {
     const postId = element.getAttribute('data-postid');
 
     if (postId) {
+        const currentPost = searchId(postList, postId);
         const likeCounterElement = document.getElementById(`like-counter-${postId}`);
         if (element.classList.contains('like-button--liked')) {
             element.classList.remove('like-button--liked');
-            likeCounterElement.innerHTML = parseInt(likeCounterElement.innerHTML) - 1;
+            likeCounterElement.innerHTML = currentPost.likes;
         } else {
             element.classList.add('like-button--liked');
-            likeCounterElement.innerHTML = parseInt(likeCounterElement.innerHTML) + 1;
+            likeCounterElement.innerHTML = currentPost.likes + 1;
         }
     }
 }
@@ -161,4 +162,8 @@ function createPost(info) {
             </div>
         </div>`;
     return postInfo;
+}
+
+function searchId(array, id){
+    return array.filter ((element) => element.id == id)[0];
 }
