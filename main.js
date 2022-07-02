@@ -110,6 +110,10 @@ likeButtons.forEach((likeButton, index) => {
         event.preventDefault();
         addLike(this, posts);
     });
+    const currentPost = searchId(posts, likeButton.getAttribute('data-postid'));
+    if (currentPost.is_liked) {
+        likeButton.click();
+    }
 });
 
 function addLike(element, postList) {
@@ -139,7 +143,7 @@ function createPost(info) {
                     </div>
                     <div class="post-meta__data">
                         <div class="post-meta__author">${author.name}</div>
-                        <div class="post-meta__time">${created}</div>
+                        <div class="post-meta__time">${changeDate(created)}</div>
                     </div>
                 </div>
             </div>
@@ -164,6 +168,10 @@ function createPost(info) {
     return postInfo;
 }
 
-function searchId(array, id){
-    return array.filter ((element) => element.id == id)[0];
+function searchId(array, id) {
+    return array.filter((element) => element.id == id)[0];
+}
+
+function changeDate(data) {
+    return data.split('-').reverse().join('/');
 }
